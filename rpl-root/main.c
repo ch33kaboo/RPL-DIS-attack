@@ -1,3 +1,8 @@
+/*
+ * This file is a wrapper to initialize and run the RPL root node.
+ * It was added because Contiki Cooja cannot run 'rpl-dag-root.c' directly.
+ */
+
 #include "contiki.h"
 #include "net/netstack.h"
 #include "rpl-dag-root.h"

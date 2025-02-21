@@ -1,3 +1,8 @@
+/*
+ * This file is a wrapper to initialize and run an RPL client node.
+ * It was added because Contiki Cooja cannot run 'rpl-icmp6.c' directly.
+ */
+
 #include "contiki.h"
 #include "rpl-icmp6.h"
 
