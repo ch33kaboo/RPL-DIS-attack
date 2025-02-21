@@ -47,7 +47,8 @@
 /* Log configuration */
 #include "sys/log.h"
 #define LOG_MODULE "RPL"
-#define LOG_LEVEL LOG_LEVEL_RPL
+// #define LOG_LEVEL LOG_LEVEL_RPL
+#define LOG_LEVEL LOG_LEVEL_DBG  /* Change from LOG_LEVEL_RPL to LOG_LEVEL_DBG for maximum verbosity */
 
 
 /*---------------------------------------------------------------------------*/
