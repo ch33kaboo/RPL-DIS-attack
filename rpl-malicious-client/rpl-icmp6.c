@@ -736,6 +736,13 @@ rpl_icmp6_init()
   uip_icmp6_register_input_handler(&dao_ack_handler);
 #endif /* RPL_WITH_DAO_ACK */
 }
-/*---------------------------------------------------------------------------*/
+
+/* Function to send DIS flood */
+void
+send_dis_flood(void)
+{
+  /* Send DIS message to all nodes (multicast) */
+  rpl_icmp6_dis_output(NULL); // passing NULL as the address sends to the RPL multicast address, we did multicast because it is easier to implement + more interesting as an attack scenario
+}
 
 /** @}*/
