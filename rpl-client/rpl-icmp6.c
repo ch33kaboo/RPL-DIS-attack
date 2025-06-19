@@ -48,6 +48,9 @@
 #include "net/ipv6/uip-icmp6.h"
 #include "net/packetbuf.h"
 #include "lib/random.h"
+#include "sys/energest.h"
+#include "sys/etimer.h"
+#include <stdio.h>
 
 #include <inttypes.h>
 #include <limits.h>
@@ -726,6 +729,29 @@ rpl_icmp6_dao_ack_output(uip_ipaddr_t *dest, uint8_t sequence, uint8_t status)
 }
 #endif /* RPL_WITH_DAO_ACK */
 /*---------------------------------------------------------------------------*/
+PROCESS(energy_log_process, "Energy Log Process");
+PROCESS_THREAD(energy_log_process, ev, data)
+{
+  static struct etimer timer;
+  PROCESS_BEGIN();
+
+  while(1) {
+    etimer_set(&timer, CLOCK_SECOND * 10); // Log every 10 seconds
+    PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&timer));
+
+    energest_flush(); // Update the values
+
+    printf("[ENERGY] CPU: %lu LPM: %lu TX: %lu RX: %lu\n",
+      (unsigned long)energest_type_time(ENERGEST_TYPE_CPU),
+      (unsigned long)energest_type_time(ENERGEST_TYPE_LPM),
+      (unsigned long)energest_type_time(ENERGEST_TYPE_TRANSMIT),
+      (unsigned long)energest_type_time(ENERGEST_TYPE_LISTEN)
+    );
+  }
+
+  PROCESS_END();
+}
+/*---------------------------------------------------------------------------*/
 void
 rpl_icmp6_init()
 {
@@ -735,6 +761,7 @@ rpl_icmp6_init()
 #if RPL_WITH_DAO_ACK
   uip_icmp6_register_input_handler(&dao_ack_handler);
 #endif /* RPL_WITH_DAO_ACK */
+  process_start(&energy_log_process, NULL);
 }
 /*---------------------------------------------------------------------------*/
 
