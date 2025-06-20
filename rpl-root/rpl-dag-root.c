@@ -50,6 +50,33 @@
 // #define LOG_LEVEL LOG_LEVEL_RPL
 #define LOG_LEVEL LOG_LEVEL_DBG  /* Change from LOG_LEVEL_RPL to LOG_LEVEL_DBG for maximum verbosity */
 
+#include "sys/energest.h"
+#include "sys/etimer.h"
+#include <stdio.h>
+
+PROCESS(energy_log_process, "Energy Log Process");
+
+PROCESS_THREAD(energy_log_process, ev, data)
+{
+  static struct etimer timer;
+  PROCESS_BEGIN();
+
+  while(1) {
+    etimer_set(&timer, CLOCK_SECOND * 10); // Log every 10 seconds
+    PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&timer));
+
+    energest_flush(); // Update the values
+
+    printf("[ENERGY] CPU: %lu LPM: %lu TX: %lu RX: %lu\n",
+      (unsigned long)energest_type_time(ENERGEST_TYPE_CPU),
+      (unsigned long)energest_type_time(ENERGEST_TYPE_LPM),
+      (unsigned long)energest_type_time(ENERGEST_TYPE_TRANSMIT),
+      (unsigned long)energest_type_time(ENERGEST_TYPE_LISTEN)
+    );
+  }
+
+  PROCESS_END();
+}
 
 /*---------------------------------------------------------------------------*/
 void
@@ -149,6 +176,7 @@ rpl_dag_root_start(void)
     rpl_dag_update_state();
 
     LOG_INFO("created a new RPL DAG\n");
+    process_start(&energy_log_process, NULL);
     return 0;
   } else {
     LOG_ERR("failed to create a new RPL DAG\n");
