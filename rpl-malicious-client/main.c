@@ -30,8 +30,8 @@ PROCESS_THREAD(dis_flood_process, ev, data)
 {
   PROCESS_BEGIN();
 
-  /* Initialize the DIS flooding timer - send bursts every 50ms */
-  etimer_set(&dis_flood_timer, CLOCK_SECOND / 20); // change this to control the interval between bursts
+  /* Initialize the DIS flooding timer - send bursts every 5 seconds */
+  etimer_set(&dis_flood_timer, CLOCK_SECOND * 5); // change the second argument to control the interval between bursts
 
   while(1) {
     PROCESS_WAIT_EVENT_UNTIL(ev == PROCESS_EVENT_TIMER);
