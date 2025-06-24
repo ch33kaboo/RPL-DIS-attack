@@ -64,7 +64,7 @@ PROCESS_THREAD(energy_log_process, ev, data)
   static struct etimer timer;
   PROCESS_BEGIN();
 
-  energest_flush(); // Update the values immediately at start
+  energest_flush();
   printf("[ENERGY] CPU: %lu LPM: %lu TX: %lu RX: %lu\n",
     (unsigned long)energest_type_time(ENERGEST_TYPE_CPU),
     (unsigned long)energest_type_time(ENERGEST_TYPE_LPM),
@@ -73,11 +73,9 @@ PROCESS_THREAD(energy_log_process, ev, data)
   );
 
   while(1) {
-    etimer_set(&timer, CLOCK_SECOND * 10); // Log every 10 seconds
+    etimer_set(&timer, CLOCK_SECOND * 10);
     PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&timer));
-
-    energest_flush(); // Update the values
-
+    energest_flush();
     printf("[ENERGY] CPU: %lu LPM: %lu TX: %lu RX: %lu\n",
       (unsigned long)energest_type_time(ENERGEST_TYPE_CPU),
       (unsigned long)energest_type_time(ENERGEST_TYPE_LPM),
@@ -88,5 +86,10 @@ PROCESS_THREAD(energy_log_process, ev, data)
 
   PROCESS_END();
 }
+
+void rpl_icmp6_init(void) {}
+void rpl_icmp6_dio_output(void) {}
+void rpl_icmp6_dis_output(void) {}
+void rpl_icmp6_dao_output(void) {}
 
 /** @}*/
