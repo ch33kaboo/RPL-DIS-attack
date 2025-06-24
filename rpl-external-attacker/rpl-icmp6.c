@@ -55,6 +55,7 @@ void send_dis_flood(void)
   uip_ipaddr_t addr;
   /* ff02::1a is the all-RPL-nodes multicast address */
   uip_ip6addr(&addr, 0xff02,0,0,0,0,0,0,0x1a);
+  printf("[INFO: RPL       ] sending a DIS to ff02::1a\n");
   uip_icmp6_send(&addr, 155, 0, 2); // 155 = ICMP6_RPL, 0 = RPL_CODE_DIS
 }
 
