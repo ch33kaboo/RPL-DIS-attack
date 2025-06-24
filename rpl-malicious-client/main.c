@@ -1,7 +1,5 @@
 /*
- * This file is a wrapper to initialize and run an RPL client node that performs
- * a DIS attack. the wrapper was added because Contiki Cooja cannot run 'rpl-icmp6.c' directly.
- * the code also has the logic of the DIS attack.
+ * This file is a wrapper to initialize and run an internal attacker node that performs a DIS flooding attack. The node joins the RPL network and participates in RPL operations (sending DISs, DIOs, DAOs, and DIO-ACKs).
  */
 
 #include "contiki.h"
