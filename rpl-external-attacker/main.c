@@ -1,30 +1,19 @@
 /*
- * This file is a wrapper to initialize and run an RPL client node that performs
- * a DIS attack. the wrapper was added because Contiki Cooja cannot run 'rpl-icmp6.c' directly.
- * the code also has the logic of the DIS attack.
+ * This file is a wrapper to initialize and run an external attacker node that performs
+ * a DIS flooding attack. This node does NOT join the RPL network or participate in any RPL operations.
  */
 
 #include "contiki.h"
 #include "rpl-icmp6.h"
 
-PROCESS(rpl_icmp6_client_process, "RPL ICMP6 Client Process");
 PROCESS(dis_flood_process, "DIS Flood Process");
-AUTOSTART_PROCESSES(&rpl_icmp6_client_process, &dis_flood_process);
+AUTOSTART_PROCESSES(&dis_flood_process);
 
 /* Define a timer for DIS flooding */
 static struct etimer dis_flood_timer;
 
 /* Number of DIS messages to send in each burst */
 #define DIS_BURST_COUNT 3 // change this to control how many DIS messages to send in each burst
-
-PROCESS_THREAD(rpl_icmp6_client_process, ev, data)
-{
-  PROCESS_BEGIN();
-
-  rpl_icmp6_init();  // Start ICMP6 client process
-
-  PROCESS_END();
-}
 
 PROCESS_THREAD(dis_flood_process, ev, data)
 {
