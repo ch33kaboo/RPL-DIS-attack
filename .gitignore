@@ -3,3 +3,4 @@ rpl-client/build
 rpl-malicious-client/build
 rpl-external-attacker/build
 loglistener*
+*.csc
