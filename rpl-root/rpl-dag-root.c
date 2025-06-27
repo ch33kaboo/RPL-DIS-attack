@@ -62,7 +62,7 @@ PROCESS_THREAD(energy_log_process, ev, data)
   PROCESS_BEGIN();
 
   while(1) {
-    etimer_set(&timer, CLOCK_SECOND * 10); // Log every 10 seconds
+    etimer_set(&timer, CLOCK_SECOND * 60); // Log every 60 seconds
     PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&timer));
 
     energest_flush(); // Update the values
