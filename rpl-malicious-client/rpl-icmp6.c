@@ -147,6 +147,13 @@ dis_input(void)
   LOG_INFO_6ADDR(&UIP_IP_BUF->srcipaddr);
   LOG_INFO_("\n");
 
+  LOG_INFO("sending a unicast-DIO to ");
+  LOG_INFO_6ADDR(&UIP_IP_BUF->srcipaddr);
+  LOG_INFO_("\n");
+
+  // Send a DIO in response to the sender of the DIS
+  rpl_icmp6_dio_output(&UIP_IP_BUF->srcipaddr);
+
   rpl_process_dis(&UIP_IP_BUF->srcipaddr, uip_is_addr_mcast(&UIP_IP_BUF->destipaddr));
 
   discard:
